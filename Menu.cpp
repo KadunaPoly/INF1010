@@ -15,6 +15,8 @@ Menu::Menu()
 	listePlats_ [MAXPLAT];
 	nbPlats_ = 0;
 	type_ = Matin;
+	
+	listePlats_ = new Plat*[MAXPLAT];
 }
 
 Menu::Menu(string fichier, TypeMenu type)
@@ -22,6 +24,8 @@ Menu::Menu(string fichier, TypeMenu type)
 	/*que faire du fichier */
 	ifstream nomFichier(fichier);
 	type_ = type;
+	
+	listePlats_ = new Plat*[MAXPLAT];
 }
 
 int Menu::getNbPlats()
@@ -29,7 +33,7 @@ int Menu::getNbPlats()
 	return nbPlats_;
 }
 
-// Une méthode permettant de trouver un plat en passant le nom du plat
+// Une mÃ©thode permettant de trouver un plat en passant le nom du plat
 Plat * Menu::trouverPlat(string & nom)
 {
 	// elle retourne un pointeur vers le plat en question 
@@ -38,7 +42,7 @@ Plat * Menu::trouverPlat(string & nom)
 			return listePlats_[i];
 		}
 		else
-		{return nullptr;}// pointeur nul si le plat n’est pas trouvé
+		{return nullptr;}// pointeur nul si le plat nâ€™est pas trouvÃ©
 	}
 }
 
@@ -46,18 +50,18 @@ Plat * Menu::trouverPlat(string & nom)
 void Menu::ajouterPlat(Plat & plat)
 {
 	if (nbPlats_ >= capacite_) {
-		//int* test = new int[5]; pointeur vers un tableau de 5 entrees
-		Plat ** NewListePlats = new Plat*[capacite_ * 2];
-		for (unsigned int i = 0; i < MAXPLAT; i++) {
-			NewListePlats[i] = listePlats_[i];
+		Plat** listePlatsTemp = listePlats_;
+		capacite_ = 2 * capacite_;
+		listePlats_ = new Plat*[capacite_];
+		for (int i = 0; i < nbPlats_; i++) {
+			listePlats_[i] = listePlatsTemp[i];
 		}
-		delete listePlats_;
-		listePlats_ = NewListePlats;
+		delete listePlatsTemp;
 	}
-
-	else {
-		listePlats_[MAXPLAT] = new Plat (plat);
-	}
+	
+	Plat * plat1 = &plat;
+	listePlats_[nbPlats_] = plat1;
+	nbPlats_++;
 }
 
 //ajout de plat : une utilisant le nom, le prix et le cout
@@ -89,8 +93,8 @@ bool Menu::lireMenu(string & fichier)
 
 void Menu::afficher()
 {
-	cout << type_ << " :\n\t\t"<< endl;
-	for (unsigned int i=0;i < nbPlats_;i++){//nbplat pas sur
+//?	cout << type_ << " :\n\t\t"<< endl;
+	for (int i = 0; i < nbPlats_; i++) {
 		listePlats_[i]->afficher();
 	}
 }
