@@ -50,7 +50,8 @@ void Plat::setPrix(double prix)
 
 void Plat::afficher()
 {
-	cout <<getNom()<<" - " << getCout() << "$ (" 
-		<< (getPrix()-getCout())<< "$ pour le restaurant)"
+	// juste prix - coût
+	cout <<getNom()<<" - " << getPrix() << "$ (" 
+		<< getCout() << "$ pour le restaurant)"
 	    << endl; 
 }
